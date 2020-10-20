@@ -49,7 +49,7 @@ class StroyApp extends StatelessWidget {
             title: Text("이야기"),
             actions: [
               IconButton(
-                icon: Icon(Icons.emoji_people),
+                icon: Icon(Icons.fireplace),
                 onPressed: () {
                   Get.to(SettingPage());
                 },
