@@ -112,58 +112,65 @@ class StroyApp extends StatelessWidget {
                             ),
                             closedBuilder:
                                 (BuildContext context, void Function() action) {
-                              return Padding(
-                                padding: const EdgeInsets.all(16),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  children: [
-                                    Row(
+                              return Material(
+                                child: InkWell(
+                                  onTap: action,
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(16),
+                                    child: Column(
                                       crossAxisAlignment:
-                                          CrossAxisAlignment.end,
+                                          CrossAxisAlignment.start,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.start,
                                       children: [
-                                        Text(
-                                          '${datetime.day}',
-                                          style: TextStyle(
-                                            color: Colors.grey.shade600,
-                                            fontWeight: FontWeight.w600,
-                                            fontSize: 24,
-                                          ),
+                                        Row(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.end,
+                                          children: [
+                                            Text(
+                                              '${datetime.day}',
+                                              style: TextStyle(
+                                                color: Colors.grey.shade600,
+                                                fontWeight: FontWeight.w600,
+                                                fontSize: 24,
+                                              ),
+                                            ),
+                                            SizedBox(width: 8),
+                                            Text(
+                                              month,
+                                              style: TextStyle(
+                                                color: Colors.grey,
+                                                fontSize: 16,
+                                              ),
+                                            ),
+                                            Spacer(),
+                                            Text(
+                                              '${datetime.hour}:${datetime.minute}',
+                                              style: TextStyle(
+                                                  color: Colors.redAccent),
+                                            ),
+                                          ],
                                         ),
-                                        SizedBox(width: 8),
+                                        const SizedBox(height: 16.0),
                                         Text(
-                                          month,
+                                          doc.data['title'],
                                           style: TextStyle(
-                                            color: Colors.grey,
+                                            color: Colors.grey.shade700,
+                                            fontWeight: FontWeight.w600,
                                             fontSize: 16,
                                           ),
                                         ),
-                                        Spacer(),
                                         Text(
-                                          '${datetime.hour}:${datetime.minute}',
+                                          doc.data['excerpt'],
+                                          maxLines: 3,
+                                          overflow: TextOverflow.fade,
+                                          softWrap: true,
                                           style: TextStyle(
-                                              color: Colors.redAccent),
+                                              color: Colors.grey.shade600),
                                         ),
                                       ],
                                     ),
-                                    const SizedBox(height: 16.0),
-                                    Text(
-                                      doc.data['title'],
-                                      style: TextStyle(
-                                        color: Colors.grey.shade700,
-                                        fontWeight: FontWeight.w600,
-                                        fontSize: 16,
-                                      ),
-                                    ),
-                                    Text(
-                                      doc.data['excerpt'],
-                                      maxLines: 3,
-                                      overflow: TextOverflow.fade,
-                                      softWrap: true,
-                                      style: TextStyle(
-                                          color: Colors.grey.shade600),
-                                    ),
-                                  ],
+                                  ),
                                 ),
                               );
                             },
