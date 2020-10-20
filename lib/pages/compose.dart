@@ -134,7 +134,7 @@ $description''');
   }
 
   String get excerpt {
-    String plainText = description.split('\n').join();
+    String plainText = description.split('\n').join(" ");
     if (plainText.length > 300) {
       plainText = plainText.substring(0, 300);
     }
