@@ -153,7 +153,7 @@ class StroyApp extends StatelessWidget {
                                         ),
                                         const SizedBox(height: 16.0),
                                         Text(
-                                          doc.data['title'],
+                                          doc.data['title'] ?? '제목없음',
                                           style: TextStyle(
                                             color: Colors.grey.shade700,
                                             fontWeight: FontWeight.w600,

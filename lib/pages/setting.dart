@@ -73,11 +73,6 @@ class SettingPage extends StatelessWidget {
             titleTextStyle: settingSectionTitleStyle,
             tiles: [
               SettingsTile(
-                title: '이용약관',
-                leading: Icon(Icons.description),
-                titleTextStyle: settingTitleStyle,
-              ),
-              SettingsTile(
                 title: '오픈소스 라이선스',
                 leading: Icon(Icons.collections_bookmark),
                 titleTextStyle: settingTitleStyle,
