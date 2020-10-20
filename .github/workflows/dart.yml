@@ -31,7 +31,7 @@ jobs:
       - name: Upload Play Store beta track
         uses: r0adkll/upload-google-play@v1
         with:
-          serviceAccountJson: ${{ secrets.PLAYSTORE_SERVICE_ACCOUNT }}
+          serviceAccountJsonPlainText: ${{ secrets.PLAYSTORE_SERVICE_ACCOUNT }}
           packageName: com.changjoopark.story_app
           releaseFile: ./build/app/outputs/bundle/release/app-release.aab
           track: internal
