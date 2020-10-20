@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:path_provider/path_provider.dart';
 
 class ComposePage extends StatefulWidget {
@@ -17,10 +18,26 @@ class _ComposePageState extends State<ComposePage> {
   TimeOfDay timeOfDay;
 
   @override
+  void initState() {
+    setState(() {
+      title = DateFormat.yMMMMEEEEd('ko').format(DateTime.now()) +
+          ' ' +
+          DateFormat.Hm('ko').format(DateTime.now());
+    });
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('새 글쓰기'),
+        leading: BackButton(color: Colors.grey.shade800),
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        title: Text(
+          '새 글쓰기',
+          style: TextStyle(color: Colors.grey.shade800),
+        ),
       ),
       persistentFooterButtons: [
         IconButton(
@@ -97,12 +114,19 @@ $description''');
               Expanded(
                 flex: 0,
                 child: TextFormField(
+                  initialValue: title,
                   cursorColor: Colors.black,
                   textInputAction: TextInputAction.next,
                   decoration: InputDecoration(
+                    focusColor: Colors.grey,
+                    enabledBorder: const UnderlineInputBorder(
+                        borderSide:
+                            const BorderSide(color: Colors.grey, width: 0.0)),
+                    border: const UnderlineInputBorder(
+                        borderSide:
+                            const BorderSide(color: Colors.grey, width: 0.0)),
                     hintText: '제목을 적어주세요',
-                    contentPadding: const EdgeInsets.only(
-                        left: 16, right: 16, top: 8, bottom: 16),
+                    contentPadding: const EdgeInsets.all(16),
                   ),
                   onSaved: (value) => setState(() => title = value),
                 ),
@@ -114,12 +138,11 @@ $description''');
                   decoration: InputDecoration(
                     hintText: "이야기를 적어주세요",
                     border: InputBorder.none,
-                    contentPadding: const EdgeInsets.only(
-                        left: 16, right: 16, top: 8, bottom: 16),
+                    contentPadding: const EdgeInsets.all(16),
                   ),
                   keyboardType: TextInputType.multiline,
                   maxLines: 99999,
-                  autofocus: false,
+                  autofocus: true,
                   onSaved: (value) => setState(() => description = value),
                 ),
               )

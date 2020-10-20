@@ -8,6 +8,12 @@
       "name": "story_app",
       "request": "launch",
       "type": "dart"
+    },
+    {
+      "name": "story_app",
+      "request": "launch",
+      "type": "dart",
+      "flutterMode": "release"
     }
   ]
 }
