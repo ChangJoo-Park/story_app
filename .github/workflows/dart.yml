@@ -1,0 +1,37 @@
+name: Android Build and Deploy
+
+on:
+  push:
+    tags:
+      - v*
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Context
+        env:
+          GITHUB_CONTEXT: ${{ toJson(github) }}
+        run: echo "$GITHUB_CONTEXT"
+      - uses: actions/checkout@v1
+        with:
+          fetch-depth: 1
+      - uses: actions/setup-java@v1
+        with:
+          java-version: '12.x'
+      - uses: subosito/flutter-action@v1
+        with:
+          channel: 'stable'
+      - name: Build App
+        run: |
+          flutter pub get
+          flutter clean
+          appVersion=$(grep 'version: ' pubspec.yaml | awk '{print $2}')
+          flutter build appbundle --release --tree-shake-icons --shrink   --obfuscate --split-debug-info=./debug-info/"$appVersion"/android/
+      - name: Upload Play Store beta track
+        uses: r0adkll/upload-google-play@v1
+        with:
+          serviceAccountJson: ${{ secrets.PLAYSTORE_SERVICE_ACCOUNT }}
+          packageName: com.changjoopark.story_app
+          releaseFile: ./build/app/outputs/bundle/release/app-release.aab
+          track: internal
