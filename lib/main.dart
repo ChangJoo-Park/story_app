@@ -44,219 +44,191 @@ class StroyApp extends StatelessWidget {
     return GetBuilder(
       init: HomeController(),
       builder: (HomeController controller) {
-        return StreamBuilder(
-          stream: documentDirectoryStream,
-          builder: (BuildContext context, AsyncSnapshot<Directory> snapshot) {
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              return Center(child: CircularProgressIndicator());
-            }
-            String path = '${snapshot.data.path}/notes';
-            if (!Directory(path).existsSync()) {
-              Directory(path).createSync();
-            }
-
-            controller.loadFiles(path);
-
-            return Scaffold(
-              backgroundColor: Colors.grey.shade100,
-              appBar: AppBar(
-                title: Text("이야기"),
-                actions: [
-                  IconButton(
-                    icon: Icon(Icons.settings),
-                    onPressed: () {
-                      Get.to(SettingPage());
-                    },
-                  )
-                ],
-              ),
-              floatingActionButton: FloatingActionButton.extended(
-                label: Text(
-                  '남기기',
-                  style: TextStyle(color: Colors.white),
-                ),
+        return Scaffold(
+          backgroundColor: Colors.grey.shade100,
+          appBar: AppBar(
+            title: Text("이야기"),
+            actions: [
+              IconButton(
+                icon: Icon(Icons.settings),
                 onPressed: () {
-                  Get.to(ComposePage()).then((value) {
-                    controller.loadFiles(path);
-                  });
+                  Get.to(SettingPage());
                 },
-              ),
-              body: Obx(
-                () => ListView.builder(
-                  itemBuilder: (BuildContext context, int index) {
-                    return FutureBuilder(
-                      future: fm.parseFile(controller.fileList[index].path),
-                      builder: (context, snapshot) {
-                        if (snapshot.connectionState ==
-                            ConnectionState.waiting) {
-                          return Container();
-                        }
-                        fm.FrontMatterDocument doc = snapshot.data;
-                        DateTime datetime =
-                            DateTime.parse(doc.data['datetime']).toLocal();
-                        String month = DateFormat.MMM('ko').format(datetime);
-                        return Padding(
-                          padding: const EdgeInsets.symmetric(vertical: 4),
-                          child: OpenContainer(
-                            key: UniqueKey(),
-                            transitionType: ContainerTransitionType.fade,
-                            transitionDuration: 350.milliseconds,
-                            openColor: Colors.grey.shade100,
-                            openElevation: 0,
-                            tappable: true,
-                            closedElevation: 0,
-                            closedColor: Colors.white70,
-                            closedShape: const RoundedRectangleBorder(
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(0)),
-                            ),
-                            closedBuilder:
-                                (BuildContext context, void Function() action) {
-                              return Material(
-                                child: InkWell(
-                                  onTap: action,
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(16),
-                                    child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.start,
-                                      children: [
-                                        Row(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.end,
-                                          children: [
-                                            Text(
-                                              '${datetime.day}',
-                                              style: TextStyle(
-                                                color: Colors.grey.shade600,
-                                                fontWeight: FontWeight.w600,
-                                                fontSize: 24,
-                                              ),
-                                            ),
-                                            SizedBox(width: 8),
-                                            Text(
-                                              month,
-                                              style: TextStyle(
-                                                color: Colors.grey,
-                                                fontSize: 16,
-                                              ),
-                                            ),
-                                            Spacer(),
-                                            Text(
-                                              '${datetime.hour}:${datetime.minute}',
-                                              style: TextStyle(
-                                                  color: Colors.redAccent),
-                                            ),
-                                          ],
-                                        ),
-                                        const SizedBox(height: 16.0),
-                                        Text(
-                                          doc.data['title'] ?? '제목없음',
-                                          style: TextStyle(
-                                            color: Colors.grey.shade700,
-                                            fontWeight: FontWeight.w600,
-                                            fontSize: 16,
-                                          ),
-                                        ),
-                                        Text(
-                                          doc.data['excerpt'],
-                                          maxLines: 3,
-                                          overflow: TextOverflow.fade,
-                                          softWrap: true,
-                                          style: TextStyle(
-                                              color: Colors.grey.shade600),
-                                        ),
-                                      ],
+              )
+            ],
+          ),
+          floatingActionButton: FloatingActionButton.extended(
+            label: Text(
+              '남기기',
+              style: TextStyle(color: Colors.white),
+            ),
+            onPressed: () {
+              Get.to(ComposePage()).then((value) {
+                controller.initialize();
+              });
+            },
+          ),
+          body: Obx(
+            () => ListView.builder(
+              itemBuilder: (BuildContext context, int index) {
+                DateTime datetime =
+                    DateTime.parse(controller.files[index].data['datetime'])
+                        .toLocal();
+                String month = DateFormat.MMM('ko').format(datetime);
+
+                return Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 4),
+                  child: OpenContainer(
+                    key: UniqueKey(),
+                    transitionType: ContainerTransitionType.fade,
+                    transitionDuration: 350.milliseconds,
+                    openColor: Colors.grey.shade100,
+                    openElevation: 0,
+                    tappable: true,
+                    closedElevation: 0,
+                    closedColor: Colors.white70,
+                    closedShape: const RoundedRectangleBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(0)),
+                    ),
+                    closedBuilder:
+                        (BuildContext context, void Function() action) {
+                      return Material(
+                        child: InkWell(
+                          onTap: action,
+                          child: Padding(
+                            padding: const EdgeInsets.all(16),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: [
+                                Row(
+                                  crossAxisAlignment: CrossAxisAlignment.end,
+                                  children: [
+                                    Text(
+                                      '${datetime.day}',
+                                      style: TextStyle(
+                                        color: Colors.grey.shade600,
+                                        fontWeight: FontWeight.w600,
+                                        fontSize: 24,
+                                      ),
                                     ),
-                                  ),
-                                ),
-                              );
-                            },
-                            openBuilder: (BuildContext context,
-                                void Function({Object returnValue}) action) {
-                              String date =
-                                  DateFormat.yMMMMEEEEd('ko').format(datetime);
-                              String time =
-                                  DateFormat.Hm('ko').format(datetime);
-                              return Scaffold(
-                                backgroundColor: Colors.grey.shade100,
-                                appBar: AppBar(
-                                  title: Text('자세히 보기'),
-                                  actions: [
-                                    PopupMenuButton(
-                                      itemBuilder: (BuildContext context) {
-                                        return;
-                                      },
+                                    SizedBox(width: 8),
+                                    Text(
+                                      month,
+                                      style: TextStyle(
+                                        color: Colors.grey,
+                                        fontSize: 16,
+                                      ),
+                                    ),
+                                    Spacer(),
+                                    Text(
+                                      '${datetime.hour}:${datetime.minute}',
+                                      style: TextStyle(color: Colors.redAccent),
                                     ),
                                   ],
                                 ),
-                                persistentFooterButtons: [
-                                  IconButton(
-                                    icon: Icon(Icons.star_border),
-                                    onPressed: () {
-                                      Get.back();
-                                    },
-                                  ),
-                                  IconButton(
-                                    icon: Icon(Icons.edit),
-                                    onPressed: () {
-                                      Get.back();
-                                    },
-                                  ),
-                                ],
-                                body: SingleChildScrollView(
-                                  child: Container(
-                                    padding: const EdgeInsets.all(16),
-                                    child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.start,
-                                      children: [
-                                        // FrontMatter
-                                        // DateTime
-                                        Container(
-                                          alignment: Alignment.centerRight,
-                                          margin:
-                                              const EdgeInsets.only(bottom: 16),
-                                          child: Text('$date $time',
-                                              textAlign: TextAlign.right),
-                                        ),
-                                        // Title
-                                        Text(
-                                          doc.data['title'],
-                                          style: Theme.of(context)
-                                              .textTheme
-                                              .headline5
-                                              .copyWith(
-                                                  fontWeight: FontWeight.bold),
-                                        ),
-                                        // Content
-                                        SizedBox(height: 16),
-                                        Text(
-                                          doc.content,
-                                          style: Theme.of(context)
-                                              .textTheme
-                                              .bodyText1,
-                                        ),
-                                      ],
-                                    ),
+                                const SizedBox(height: 16.0),
+                                Text(
+                                  controller.files[index].data['title'] ??
+                                      '제목없음',
+                                  style: TextStyle(
+                                    color: Colors.grey.shade700,
+                                    fontWeight: FontWeight.w600,
+                                    fontSize: 16,
                                   ),
                                 ),
-                              );
+                                Text(
+                                  controller.files[index].data['excerpt'],
+                                  maxLines: 3,
+                                  overflow: TextOverflow.fade,
+                                  softWrap: true,
+                                  style: TextStyle(color: Colors.grey.shade600),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      );
+                    },
+                    openBuilder: (BuildContext context,
+                        void Function({Object returnValue}) action) {
+                      String date =
+                          DateFormat.yMMMMEEEEd('ko').format(datetime);
+                      String time = DateFormat.Hm('ko').format(datetime);
+                      return Scaffold(
+                        backgroundColor: Colors.grey.shade100,
+                        appBar: AppBar(
+                          title: Text('자세히 보기'),
+                          actions: [
+                            PopupMenuButton<int>(
+                              itemBuilder: (context) => [
+                                PopupMenuItem(
+                                  value: 1,
+                                  child: Text("First"),
+                                ),
+                                PopupMenuItem(
+                                  value: 2,
+                                  child: Text("Second"),
+                                ),
+                              ],
+                            )
+                          ],
+                        ),
+                        persistentFooterButtons: [
+                          IconButton(
+                            icon: Icon(Icons.star_border),
+                            onPressed: () {
+                              Get.back();
                             },
                           ),
-                        );
-                      },
-                    );
-                  },
-                  itemCount: controller.fileList.length,
-                ),
-              ),
-            );
-          },
+                          IconButton(
+                            icon: Icon(Icons.edit),
+                            onPressed: () {
+                              Get.back();
+                            },
+                          ),
+                        ],
+                        body: SingleChildScrollView(
+                          child: Container(
+                            padding: const EdgeInsets.all(16),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: [
+                                // FrontMatter
+                                // DateTime
+                                Container(
+                                  alignment: Alignment.centerRight,
+                                  margin: const EdgeInsets.only(bottom: 16),
+                                  child: Text('$date $time',
+                                      textAlign: TextAlign.right),
+                                ),
+                                // Title
+                                Text(
+                                  controller.files[index].data['title'],
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .headline5
+                                      .copyWith(fontWeight: FontWeight.bold),
+                                ),
+                                // Content
+                                SizedBox(height: 16),
+                                Text(
+                                  controller.files[index].content,
+                                  style: Theme.of(context).textTheme.bodyText1,
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      );
+                    },
+                  ),
+                );
+              },
+              itemCount: controller.files.length,
+            ),
+          ),
         );
       },
     );
