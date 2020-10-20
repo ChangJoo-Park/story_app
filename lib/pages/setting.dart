@@ -1,98 +1,91 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:settings_ui/settings_ui.dart';
 
 class SettingPage extends StatelessWidget {
+  final TextStyle settingTitleStyle = TextStyle(color: Colors.grey.shade800);
+  final TextStyle settingSectionTitleStyle =
+      TextStyle(color: Colors.grey.shade700);
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.grey.shade100,
       appBar: AppBar(
-        backgroundColor: Colors.grey.shade100,
         title: Text('설정'),
       ),
       body: SettingsList(
+        backgroundColor: Colors.grey.shade100,
+        shrinkWrap: true,
         sections: [
           SettingsSection(
-            title: 'Common',
+            titleTextStyle: settingSectionTitleStyle,
+            title: '일반 설정',
             tiles: [
               SettingsTile(
-                title: 'Language',
-                subtitle: 'English',
+                title: '언어',
+                subtitle: '한국어',
                 leading: Icon(Icons.language),
+                titleTextStyle: settingTitleStyle,
               ),
               SettingsTile(
-                title: 'Environment',
-                subtitle: 'Production',
+                title: '글꼴',
+                subtitle: '마포금빛나루',
                 leading: Icon(Icons.cloud_queue),
-                onTap: () => print('e'),
+                titleTextStyle: settingTitleStyle,
               ),
             ],
           ),
           SettingsSection(
-            title: 'Account',
-            tiles: [
-              SettingsTile(title: 'Phone number', leading: Icon(Icons.phone)),
-              SettingsTile(title: 'Email', leading: Icon(Icons.email)),
-              SettingsTile(title: 'Sign out', leading: Icon(Icons.exit_to_app)),
-            ],
-          ),
-          SettingsSection(
-            title: 'Security',
-            tiles: [
-              SettingsTile.switchTile(
-                title: 'Lock app in background',
-                leading: Icon(Icons.phonelink_lock),
-                switchValue: false,
-                onToggle: (bool value) {},
-              ),
-              SettingsTile.switchTile(
-                  title: 'Use fingerprint',
-                  leading: Icon(Icons.fingerprint),
-                  onToggle: (bool value) {},
-                  switchValue: false),
-              SettingsTile.switchTile(
-                title: 'Change password',
-                leading: Icon(Icons.lock),
-                switchValue: true,
-                onToggle: (bool value) {},
-              ),
-              SettingsTile.switchTile(
-                title: 'Enable Notifications',
-                enabled: false,
-                leading: Icon(Icons.notifications_active),
-                switchValue: true,
-                onToggle: (value) {},
-              ),
-            ],
-          ),
-          SettingsSection(
-            title: 'Misc',
+            title: '연락',
+            titleTextStyle: settingSectionTitleStyle,
             tiles: [
               SettingsTile(
-                  title: 'Terms of Service', leading: Icon(Icons.description)),
+                title: '커뮤니티 참여',
+                subtitle: '개발중입니다.',
+                leading: Icon(Icons.chat_bubble),
+                titleTextStyle: settingTitleStyle,
+              ),
               SettingsTile(
-                  title: 'Open source licenses',
-                  leading: Icon(Icons.collections_bookmark)),
+                title: '스토어에 리뷰 남기기',
+                leading: Icon(Icons.star_rate),
+                titleTextStyle: settingTitleStyle,
+              ),
+              SettingsTile(
+                title: '이야기 후원하기',
+                subtitle: '개발중입니다.',
+                leading: Icon(Icons.support),
+                titleTextStyle: settingTitleStyle,
+              ),
+              SettingsTile(
+                title: '개발자에게 문의하기',
+                leading: Icon(Icons.question_answer),
+                titleTextStyle: settingTitleStyle,
+              ),
+              SettingsTile(
+                title: '이야기 앱 공유하기',
+                leading: Icon(Icons.share),
+                titleTextStyle: settingTitleStyle,
+              ),
             ],
           ),
-          CustomSection(
-            child: Column(
-              children: [
-                Padding(
-                  padding: const EdgeInsets.only(top: 22, bottom: 8),
-                  child: Image.asset(
-                    'assets/settings.png',
-                    height: 50,
-                    width: 50,
-                    color: Color(0xFF777777),
-                  ),
-                ),
-                Text(
-                  'Version: 2.4.0 (287)',
-                  style: TextStyle(color: Color(0xFF777777)),
-                ),
-              ],
-            ),
+          SettingsSection(
+            title: '기타',
+            titleTextStyle: settingSectionTitleStyle,
+            tiles: [
+              SettingsTile(
+                title: '이용약관',
+                leading: Icon(Icons.description),
+                titleTextStyle: settingTitleStyle,
+              ),
+              SettingsTile(
+                title: '오픈소스 라이선스',
+                leading: Icon(Icons.collections_bookmark),
+                titleTextStyle: settingTitleStyle,
+                onTap: () {
+                  Get.to(LicensePage());
+                },
+              ),
+            ],
           ),
         ],
       ),
