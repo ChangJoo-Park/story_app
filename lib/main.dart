@@ -9,6 +9,7 @@ import 'package:front_matter/front_matter.dart' as fm;
 import 'package:story_app/controllers/home_controller.dart';
 import 'package:story_app/pages/compose.dart';
 import 'package:intl/date_symbol_data_local.dart';
+import 'package:story_app/pages/setting.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -63,7 +64,9 @@ class StroyApp extends StatelessWidget {
                 actions: [
                   IconButton(
                     icon: Icon(Icons.settings),
-                    onPressed: () {},
+                    onPressed: () {
+                      Get.to(SettingPage());
+                    },
                   )
                 ],
               ),
@@ -93,14 +96,20 @@ class StroyApp extends StatelessWidget {
                             DateTime.parse(doc.data['datetime']).toLocal();
                         String month = DateFormat.MMM('ko').format(datetime);
                         return Padding(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 16, vertical: 8),
+                          padding: const EdgeInsets.symmetric(vertical: 4),
                           child: OpenContainer(
+                            key: UniqueKey(),
                             transitionType: ContainerTransitionType.fade,
                             transitionDuration: 350.milliseconds,
+                            openColor: Colors.grey.shade100,
                             openElevation: 0,
-                            key: UniqueKey(),
                             tappable: true,
+                            closedElevation: 0,
+                            closedColor: Colors.white70,
+                            closedShape: const RoundedRectangleBorder(
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(0)),
+                            ),
                             closedBuilder:
                                 (BuildContext context, void Function() action) {
                               return Padding(
