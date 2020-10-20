@@ -33,6 +33,7 @@ dependencies:
   front_matter: ^1.1.0
   animations: ^1.1.2
   intl: ^0.16.1
+  settings_ui: ^0.4.0
 
 dev_dependencies:
   flutter_test:
