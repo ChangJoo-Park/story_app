@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:front_matter/front_matter.dart' as fm;
 import 'package:story_app/controllers/home_controller.dart';
 import 'package:story_app/pages/compose.dart';
 import 'package:intl/date_symbol_data_local.dart';
@@ -50,7 +49,7 @@ class StroyApp extends StatelessWidget {
             title: Text("이야기"),
             actions: [
               IconButton(
-                icon: Icon(Icons.settings),
+                icon: Icon(Icons.emoji_people),
                 onPressed: () {
                   Get.to(SettingPage());
                 },
