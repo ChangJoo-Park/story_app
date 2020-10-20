@@ -10,7 +10,7 @@
       "type": "dart"
     },
     {
-      "name": "story_app",
+      "name": "릴리즈",
       "request": "launch",
       "type": "dart",
       "flutterMode": "release"
