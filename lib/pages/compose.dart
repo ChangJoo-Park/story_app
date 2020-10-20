@@ -2,7 +2,6 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:intl/intl.dart';
 import 'package:path_provider/path_provider.dart';
 
 class ComposePage extends StatefulWidget {
@@ -19,134 +18,115 @@ class _ComposePageState extends State<ComposePage> {
 
   @override
   void initState() {
-    setState(() {
-      title = DateFormat.yMMMMEEEEd('ko').format(DateTime.now()) +
-          ' ' +
-          DateFormat.Hm('ko').format(DateTime.now());
-    });
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        leading: BackButton(color: Colors.grey.shade800),
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-        title: Text(
-          '새 글쓰기',
-          style: TextStyle(color: Colors.grey.shade800),
-        ),
-      ),
-      persistentFooterButtons: [
-        IconButton(
-          icon: Icon(Icons.calendar_today),
-          onPressed: () {
-            showDatePicker(
-              context: context,
-              firstDate: DateTime.now().subtract(Duration(days: 365 * 10)),
-              lastDate: DateTime.now().add(Duration(days: 365 * 10)),
-              initialDate: DateTime.now(),
-            ).then((newDate) {
-              if (newDate == null) {
-                return;
-              }
-              setState(() {
-                date = newDate;
-              });
-            });
+    return WillPopScope(
+      onWillPop: () {
+        _formKey.currentState.save();
+        if (title.isEmpty && description.isEmpty) {
+          return Future.value(true);
+        }
+        FocusScope.of(context).unfocus();
+        return Get.defaultDialog(
+          title: '그만 작성하실래요?',
+          barrierDismissible: true,
+          radius: 8,
+          middleText: '',
+          textConfirm: '닫습니다',
+          textCancel: '계속합니다',
+          cancelTextColor: Colors.black,
+          confirmTextColor: Colors.red,
+          buttonColor: Colors.white,
+          content: Text('닫으시면 작성하던 내용이 사라집니다.'),
+          onConfirm: () {
+            Get.back();
+            Get.back();
           },
-        ),
-        IconButton(
-          icon: Icon(Icons.access_time),
-          onPressed: () {
-            showTimePicker(
-              context: context,
-              initialTime: TimeOfDay.now(),
-            ).then((newTime) {
-              if (newTime == null) {
-                return;
-              }
-              setState(() {
-                timeOfDay = newTime;
-              });
-            }).catchError((e) {
-              print(e);
-            });
-          },
-        ),
-        // IconButton(
-        //   icon: Icon(Icons.photo),
-        //   onPressed: () {
-        //     Get.back();
-        //   },
-        // ),
-        IconButton(
-          icon: Icon(Icons.save),
-          onPressed: () async {
-            // Keyboard Hide
-            FocusScope.of(context).unfocus();
-            // 여기서 조립
-            _formKey.currentState.save();
-            final directory = await getApplicationDocumentsDirectory();
-            final filename = DateTime.now().toUtc();
-            final path = '${directory.path}/notes/$filename.txt';
-            File(path).createSync();
-            File(path).writeAsStringSync('''---
+        ).then((value) {
+          return null;
+        });
+      },
+      child: Scaffold(
+        appBar: AppBar(
+          leading: BackButton(color: Colors.grey.shade800),
+          backgroundColor: Colors.transparent,
+          actions: [
+            FlatButton(
+              child: Text('저장'),
+              onPressed: () async {
+                // Keyboard Hide
+                FocusScope.of(context).unfocus();
+                // 여기서 조립
+                _formKey.currentState.save();
+                final directory = await getApplicationDocumentsDirectory();
+                final filename = DateTime.now().toUtc();
+                final path = '${directory.path}/notes/$filename.txt';
+                File(path).createSync();
+                File(path).writeAsStringSync('''---
 title: "$title"
 excerpt: "$excerpt"
 datetime: "${DateTime.now().toUtc()}"
 images: ""
 ---
 $description''');
-            Get.back();
-          },
+                Get.back();
+              },
+            ),
+          ],
+          elevation: 0,
+          title: Text(
+            '새 글쓰기',
+            style: TextStyle(color: Colors.grey.shade800),
+          ),
         ),
-      ],
-      body: ScrollConfiguration(
-        behavior: NoGlowScrollBehavior(),
-        child: Form(
-          key: _formKey,
-          child: Flex(
-            direction: Axis.vertical,
-            children: [
-              Expanded(
-                flex: 0,
-                child: TextFormField(
-                  initialValue: title,
-                  cursorColor: Colors.black,
-                  textInputAction: TextInputAction.next,
-                  decoration: InputDecoration(
-                    focusColor: Colors.grey,
-                    enabledBorder: const UnderlineInputBorder(
-                        borderSide:
-                            const BorderSide(color: Colors.grey, width: 0.0)),
-                    border: const UnderlineInputBorder(
-                        borderSide:
-                            const BorderSide(color: Colors.grey, width: 0.0)),
-                    hintText: '제목을 적어주세요',
-                    contentPadding: const EdgeInsets.all(16),
+        body: ScrollConfiguration(
+          behavior: NoGlowScrollBehavior(),
+          child: Form(
+            key: _formKey,
+            child: Flex(
+              direction: Axis.vertical,
+              children: [
+                Expanded(
+                  flex: 0,
+                  child: TextFormField(
+                    initialValue: title,
+                    cursorColor: Colors.black,
+                    textInputAction: TextInputAction.next,
+                    autofocus: true,
+                    decoration: InputDecoration(
+                      focusColor: Colors.grey,
+                      enabledBorder: InputBorder.none,
+                      border: InputBorder.none,
+                      hintText: '제목을 적어주세요',
+                      contentPadding: const EdgeInsets.all(16),
+                    ),
+                    onSaved: (value) => setState(() => title = value),
                   ),
-                  onSaved: (value) => setState(() => title = value),
                 ),
-              ),
-              Expanded(
-                flex: 1,
-                child: TextFormField(
-                  cursorColor: Colors.black,
-                  decoration: InputDecoration(
-                    hintText: "이야기를 적어주세요",
-                    border: InputBorder.none,
-                    contentPadding: const EdgeInsets.all(16),
+                Expanded(
+                  flex: 1,
+                  child: TextFormField(
+                    cursorColor: Colors.black,
+                    decoration: InputDecoration(
+                      hintText: "무슨 이야기를 적어볼까요?",
+                      border: InputBorder.none,
+                      contentPadding: const EdgeInsets.all(16),
+                    ),
+                    keyboardType: TextInputType.multiline,
+                    maxLines: 99999,
+                    autofocus: false,
+                    enableInteractiveSelection: true,
+                    enableSuggestions: true,
+                    smartDashesType: SmartDashesType.enabled,
+                    smartQuotesType: SmartQuotesType.enabled,
+                    onSaved: (value) => setState(() => description = value),
                   ),
-                  keyboardType: TextInputType.multiline,
-                  maxLines: 99999,
-                  autofocus: true,
-                  onSaved: (value) => setState(() => description = value),
-                ),
-              )
-            ],
+                )
+              ],
+            ),
           ),
         ),
       ),
