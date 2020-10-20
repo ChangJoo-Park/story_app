@@ -71,15 +71,18 @@ class StroyApp extends StatelessWidget {
           body: Obx(
             () => ListView.builder(
               itemBuilder: (BuildContext context, int index) {
-                DateTime datetime =
-                    DateTime.parse(controller.files[index].data['datetime'])
-                        .toLocal();
+                DateTime datetime = DateTime.parse(
+                        controller.files[index]['doc'].data['datetime'])
+                    .toLocal();
                 String month = DateFormat.MMM('ko').format(datetime);
 
                 return Padding(
                   padding: const EdgeInsets.symmetric(vertical: 4),
                   child: OpenContainer(
                     key: UniqueKey(),
+                    onClosed: (value) {
+                      controller.initialize();
+                    },
                     transitionType: ContainerTransitionType.fade,
                     transitionDuration: 350.milliseconds,
                     openColor: Colors.grey.shade100,
@@ -122,14 +125,15 @@ class StroyApp extends StatelessWidget {
                                     ),
                                     Spacer(),
                                     Text(
-                                      '${datetime.hour}:${datetime.minute}',
+                                      DateFormat.Hm('ko').format(datetime),
                                       style: TextStyle(color: Colors.redAccent),
                                     ),
                                   ],
                                 ),
                                 const SizedBox(height: 16.0),
                                 Text(
-                                  controller.files[index].data['title'] ??
+                                  controller
+                                          .files[index]['doc'].data['title'] ??
                                       '제목없음',
                                   style: TextStyle(
                                     color: Colors.grey.shade700,
@@ -137,8 +141,10 @@ class StroyApp extends StatelessWidget {
                                     fontSize: 16,
                                   ),
                                 ),
+                                SizedBox(height: 4),
                                 Text(
-                                  controller.files[index].data['excerpt'],
+                                  controller
+                                      .files[index]['doc'].data['excerpt'],
                                   maxLines: 3,
                                   overflow: TextOverflow.fade,
                                   softWrap: true,
@@ -161,33 +167,47 @@ class StroyApp extends StatelessWidget {
                           title: Text('자세히 보기'),
                           actions: [
                             PopupMenuButton<int>(
+                              onSelected: (selected) {
+                                switch (selected) {
+                                  case 1:
+                                    // Get.to(ComposePage());
+                                    break;
+                                  case 2:
+                                    Get.defaultDialog(
+                                      title: '이 이야기를 지울까요?',
+                                      barrierDismissible: true,
+                                      radius: 8,
+                                      middleText: '',
+                                      textConfirm: '네',
+                                      textCancel: '아니요',
+                                      cancelTextColor: Colors.black,
+                                      confirmTextColor: Colors.red,
+                                      buttonColor: Colors.white,
+                                      onConfirm: () {
+                                        Get.back();
+                                        Get.back();
+                                      },
+                                    ).then((value) {
+                                      return null;
+                                    });
+                                    break;
+                                  default:
+                                }
+                              },
                               itemBuilder: (context) => [
                                 PopupMenuItem(
                                   value: 1,
-                                  child: Text("First"),
+                                  child: Text("수정"),
                                 ),
+                                PopupMenuDivider(),
                                 PopupMenuItem(
                                   value: 2,
-                                  child: Text("Second"),
+                                  child: Text("삭제"),
                                 ),
                               ],
                             )
                           ],
                         ),
-                        persistentFooterButtons: [
-                          IconButton(
-                            icon: Icon(Icons.star_border),
-                            onPressed: () {
-                              Get.back();
-                            },
-                          ),
-                          IconButton(
-                            icon: Icon(Icons.edit),
-                            onPressed: () {
-                              Get.back();
-                            },
-                          ),
-                        ],
                         body: SingleChildScrollView(
                           child: Container(
                             padding: const EdgeInsets.all(16),
@@ -205,7 +225,7 @@ class StroyApp extends StatelessWidget {
                                 ),
                                 // Title
                                 Text(
-                                  controller.files[index].data['title'],
+                                  controller.files[index]['doc'].data['title'],
                                   style: Theme.of(context)
                                       .textTheme
                                       .headline5
@@ -214,7 +234,7 @@ class StroyApp extends StatelessWidget {
                                 // Content
                                 SizedBox(height: 16),
                                 Text(
-                                  controller.files[index].content,
+                                  controller.files[index]['doc'].content,
                                   style: Theme.of(context).textTheme.bodyText1,
                                 ),
                               ],
