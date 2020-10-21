@@ -1,13 +1,13 @@
-import 'dart:async';
 import 'dart:io';
 
 import 'package:animations/animations.dart';
 import 'package:clipboard/clipboard.dart';
+import 'package:firebase_analytics/firebase_analytics.dart';
+import 'package:firebase_analytics/observer.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:intl/intl.dart';
-import 'package:path_provider/path_provider.dart';
 import 'package:story_app/controllers/home_controller.dart';
 import 'package:story_app/models/post.dart';
 import 'package:story_app/pages/compose.dart';
@@ -19,6 +19,9 @@ void main() async {
   runApp(
     GetMaterialApp(
       home: StroyApp(),
+      navigatorObservers: [
+        FirebaseAnalyticsObserver(analytics: FirebaseAnalytics()),
+      ],
       theme: ThemeData(
         primaryColor: Colors.grey.shade100,
         fontFamily: 'Mapo금빛나루',
