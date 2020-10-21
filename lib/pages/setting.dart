@@ -48,20 +48,30 @@ class SettingPage extends StatelessWidget {
                 leading: Icon(Icons.connect_without_contact),
                 titleTextStyle: settingTitleStyle,
                 onTap: () {
-                  // 이미 로그인된 상태면 바로 들어감
-                  // 아니면 로그인 안내함
                   Get.defaultDialog(
-                    title: '로그인 안내',
-                    middleText: '함께쓰기는 로그인을 하지만,\n다른 사용자에게 개인정보를 보여주지 않아요',
-                    textCancel: '닫기',
-                    textConfirm: '로그인',
-                    cancelTextColor: Colors.grey.shade700,
+                    title: '함께쓰기 안내',
+                    middleText:
+                        '함께쓰기는 이야기를 다른 사람들과\n나눌 수 있는 공간이에요.\n열심히 만들고 있어요',
                     confirmTextColor: Colors.black,
+                    textConfirm: '닫기',
                     onConfirm: () {
                       Get.back();
-                      Get.to(CommunityPage());
                     },
                   );
+                  // 이미 로그인된 상태면 바로 들어감
+                  // 아니면 로그인 안내함
+                  // Get.defaultDialog(
+                  //   title: '로그인 안내',
+                  //   middleText: '함께쓰기는 로그인을 하지만,\n다른 사용자에게 개인정보를 보여주지 않아요',
+                  //   textCancel: '닫기',
+                  //   textConfirm: '로그인',
+                  //   cancelTextColor: Colors.grey.shade700,
+                  //   confirmTextColor: Colors.black,
+                  //   onConfirm: () {
+                  //     Get.back();
+                  //     Get.to(CommunityPage());
+                  //   },
+                  // );
                 },
               ),
               SettingsTile(
@@ -85,6 +95,17 @@ class SettingPage extends StatelessWidget {
                 subtitle: '개발중입니다.',
                 leading: Icon(Icons.support),
                 titleTextStyle: settingTitleStyle,
+                onTap: () {
+                  Get.defaultDialog(
+                    title: '후원하기',
+                    middleText: '눌러주셔서 고마워요.\n나중에 준비되면 다시 한번 눌러주세요.',
+                    confirmTextColor: Colors.black,
+                    textConfirm: '닫기',
+                    onConfirm: () {
+                      Get.back();
+                    },
+                  );
+                },
               ),
               SettingsTile(
                 title: '이야기 앱 알리기',
