@@ -36,7 +36,7 @@ dependencies:
   settings_ui: ^0.4.0
   clipboard: ^0.1.2+8
   share: ^0.6.5+3
-  flutter_inapp_purchase: ^2.3.2
+  # flutter_inapp_purchase: ^2.3.2
   in_app_review: ^0.2.1+1
 
 dev_dependencies:
