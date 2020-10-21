@@ -3,7 +3,6 @@ import 'package:get/get.dart';
 import 'package:in_app_review/in_app_review.dart';
 import 'package:settings_ui/settings_ui.dart';
 import 'package:share/share.dart';
-import 'package:story_app/pages/community.dart';
 
 class SettingPage extends StatelessWidget {
   final TextStyle settingTitleStyle = TextStyle(color: Colors.grey.shade800);
