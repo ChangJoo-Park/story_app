@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:in_app_review/in_app_review.dart';
 import 'package:settings_ui/settings_ui.dart';
 import 'package:share/share.dart';
+import 'package:story_app/pages/community.dart';
 
 class SettingPage extends StatelessWidget {
   final TextStyle settingTitleStyle = TextStyle(color: Colors.grey.shade800);
@@ -46,6 +47,21 @@ class SettingPage extends StatelessWidget {
                 subtitle: '다른 사용자들과 이야기를 나누세요.',
                 leading: Icon(Icons.connect_without_contact),
                 titleTextStyle: settingTitleStyle,
+                onTap: () {
+                  // 이미 로그인된 상태면 바로 들어감
+                  // 아니면 로그인 안내함
+                  Get.defaultDialog(
+                    title: '로그인 안내',
+                    middleText: '함께쓰기는 로그인을 하지만,\n개인정보를 보여주지 않아요',
+                    textCancel: '나중에',
+                    textConfirm: '시작하기',
+                    cancelTextColor: Colors.grey.shade700,
+                    confirmTextColor: Colors.black,
+                    onConfirm: () {
+                      Get.to(CommunityPage());
+                    },
+                  );
+                },
               ),
               SettingsTile(
                 title: '플레이스토어에 리뷰 남기기',
@@ -70,7 +86,7 @@ class SettingPage extends StatelessWidget {
                 titleTextStyle: settingTitleStyle,
               ),
               SettingsTile(
-                title: '이야기 앱 공유하기',
+                title: '이야기 앱 알리기',
                 leading: Icon(Icons.share),
                 titleTextStyle: settingTitleStyle,
                 onTap: () {
