@@ -40,13 +40,14 @@ class SettingPage extends StatelessWidget {
             titleTextStyle: settingSectionTitleStyle,
             tiles: [
               SettingsTile(
-                title: '커뮤니티 참여',
-                subtitle: '개발중입니다.',
+                title: '함께쓰기',
+                subtitle: '다른 사용자들과 이야기를 나누세요.',
                 leading: Icon(Icons.connect_without_contact),
                 titleTextStyle: settingTitleStyle,
               ),
               SettingsTile(
-                title: '스토어에 리뷰 남기기',
+                title: '플레이스토어에 리뷰 남기기',
+                subtitle: '칭찬과 격려를 남겨주세요.',
                 leading: Icon(Icons.star_rate),
                 titleTextStyle: settingTitleStyle,
               ),

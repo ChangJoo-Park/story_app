@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:animations/animations.dart';
+import 'package:clipboard/clipboard.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/date_symbol_data_local.dart';
@@ -168,13 +169,23 @@ class StroyApp extends StatelessWidget {
                             PopupMenuButton<int>(
                               onSelected: (selected) {
                                 switch (selected) {
-                                  case 1:
+                                  case 0:
+                                    String content =
+                                        "${item['doc'].data['title']}\n${item['doc'].content}";
+                                    FlutterClipboard.copy(content)
+                                        .then((value) {
+                                      Get.snackbar('클립보드에 복사',
+                                          '잘 복사되었습니다. 다른 곳에서 붙여넣으세요.');
+                                    });
+
+                                    break;
+                                  case 10:
                                     Get.to(ComposePage(item: item))
                                         .then((result) {
                                       Get.back();
                                     });
                                     break;
-                                  case 2:
+                                  case 20:
                                     Get.defaultDialog(
                                       title: '이 이야기를 지울까요?',
                                       barrierDismissible: true,
@@ -199,13 +210,17 @@ class StroyApp extends StatelessWidget {
                               },
                               itemBuilder: (context) => [
                                 PopupMenuItem(
-                                  value: 1,
-                                  child: Text("수정"),
+                                  value: 0,
+                                  child: Text("복사"),
+                                ),
+                                PopupMenuItem(
+                                  value: 10,
+                                  child: Text("고치기"),
                                 ),
                                 PopupMenuDivider(),
                                 PopupMenuItem(
-                                  value: 2,
-                                  child: Text("삭제"),
+                                  value: 20,
+                                  child: Text("지우기"),
                                 ),
                               ],
                             )
