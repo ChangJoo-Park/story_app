@@ -50,12 +50,12 @@ class StroyApp extends StatelessWidget {
           appBar: AppBar(
             title: Text("이야기"),
             actions: [
-              IconButton(
-                icon: Icon(Icons.settings),
+              FlatButton(
+                child: Text('더보기'),
                 onPressed: () {
                   Get.to(SettingPage());
                 },
-              )
+              ),
             ],
           ),
           floatingActionButton: FloatingActionButton.extended(
