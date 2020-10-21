@@ -219,26 +219,26 @@ class StroyApp extends StatelessWidget {
                               mainAxisAlignment: MainAxisAlignment.start,
                               children: [
                                 // FrontMatter
+                                // Title
+                                if (item['doc'].data['title'] != '')
+                                  Text(
+                                    item['doc'].data['title'],
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .headline5
+                                        .copyWith(
+                                          fontWeight: FontWeight.bold,
+                                          color: Colors.grey.shade700,
+                                        ),
+                                  ),
                                 // DateTime
                                 Container(
-                                  alignment: Alignment.centerRight,
-                                  margin: const EdgeInsets.only(bottom: 16),
+                                  alignment: Alignment.centerLeft,
+                                  margin: const EdgeInsets.only(bottom: 8),
                                   child: Text('$date $time',
                                       textAlign: TextAlign.right),
                                 ),
-                                // Title
-                                Text(
-                                  item['doc'].data['title'],
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .headline5
-                                      .copyWith(
-                                        fontWeight: FontWeight.bold,
-                                        color: Colors.grey.shade700,
-                                      ),
-                                ),
                                 // Content
-                                SizedBox(height: 16),
                                 Text(
                                   item['doc'].content,
                                   style: Theme.of(context).textTheme.bodyText1,
