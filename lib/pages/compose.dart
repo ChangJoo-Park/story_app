@@ -80,7 +80,7 @@ class _ComposePageState extends State<ComposePage> {
                     ? widget.item['path']
                     : '${directory.path}/notes/$filename.txt';
                 final String content = '''---
-title: "$title"
+title: "${title.trim()}"
 excerpt: "$excerpt"
 datetime: "${DateTime.now().toUtc()}"
 images: ""
