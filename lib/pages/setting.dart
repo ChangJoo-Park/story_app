@@ -70,11 +70,6 @@ class SettingPage extends StatelessWidget {
                 titleTextStyle: settingTitleStyle,
               ),
               SettingsTile(
-                title: '개발자에게 문의하기',
-                leading: Icon(Icons.question_answer),
-                titleTextStyle: settingTitleStyle,
-              ),
-              SettingsTile(
                 title: '이야기 앱 공유하기',
                 leading: Icon(Icons.share),
                 titleTextStyle: settingTitleStyle,
