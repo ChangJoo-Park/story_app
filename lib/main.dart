@@ -228,7 +228,10 @@ class StroyApp extends StatelessWidget {
                                   style: Theme.of(context)
                                       .textTheme
                                       .headline5
-                                      .copyWith(fontWeight: FontWeight.bold),
+                                      .copyWith(
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.grey.shade700,
+                                      ),
                                 ),
                                 // Content
                                 SizedBox(height: 16),
