@@ -52,7 +52,7 @@ class SettingPage extends StatelessWidget {
                   // 아니면 로그인 안내함
                   Get.defaultDialog(
                     title: '로그인 안내',
-                    middleText: '함께쓰기는 로그인을 하지만,\n개인정보를 보여주지 않아요',
+                    middleText: '함께쓰기는 로그인을 하지만,\n다른 사용자에게 개인정보를 보여주지 않아요',
                     textCancel: '닫기',
                     textConfirm: '로그인',
                     cancelTextColor: Colors.grey.shade700,
