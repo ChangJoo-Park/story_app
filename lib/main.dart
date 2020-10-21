@@ -243,20 +243,28 @@ class StroyApp extends StatelessWidget {
                                         .headline5
                                         .copyWith(
                                           fontWeight: FontWeight.bold,
-                                          color: Colors.grey.shade700,
+                                          color: Colors.grey.shade800,
                                         ),
                                   ),
                                 // DateTime
                                 Container(
                                   alignment: Alignment.centerLeft,
                                   margin: const EdgeInsets.only(bottom: 8),
-                                  child: Text('$date $time',
-                                      textAlign: TextAlign.right),
+                                  child: Text(
+                                    '$date $time',
+                                    textAlign: TextAlign.right,
+                                    style: TextStyle(
+                                      color: Colors.grey.shade600,
+                                    ),
+                                  ),
                                 ),
                                 // Content
                                 Text(
                                   item['doc'].content,
-                                  style: Theme.of(context).textTheme.bodyText1,
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .bodyText1
+                                      .copyWith(color: Colors.grey.shade700),
                                 ),
                               ],
                             ),
