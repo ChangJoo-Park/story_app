@@ -16,6 +16,9 @@ class HomeController extends GetxController {
   Future initialize() {
     return getApplicationDocumentsDirectory().then((Directory directory) {
       String path = '${directory.path}/notes';
+      if (!Directory(path).existsSync()) {
+        Directory(path).createSync();
+      }
       return Directory(path).listSync();
     }).then((List<FileSystemEntity> files) {
       return Future.wait(files.map((file) async {
@@ -27,6 +30,10 @@ class HomeController extends GetxController {
         return map;
       }).toList());
     }).then((List<Map<String, dynamic>> list) {
+      if (list.isEmpty) {
+        return list;
+      }
+
       list.sort((Map<String, dynamic> a, Map<String, dynamic> b) {
         DateTime dateA = DateTime.parse(a['doc'].data['datetime']);
         DateTime dateB = DateTime.parse(b['doc'].data['datetime']);
