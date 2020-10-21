@@ -13,7 +13,7 @@ class SettingPage extends StatelessWidget {
     return Scaffold(
       backgroundColor: Colors.grey.shade100,
       appBar: AppBar(
-        title: Text('설정'),
+        title: Text('더보기'),
       ),
       body: SettingsList(
         backgroundColor: Colors.grey.shade100,
