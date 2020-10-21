@@ -42,7 +42,7 @@ class SettingPage extends StatelessWidget {
               SettingsTile(
                 title: '커뮤니티 참여',
                 subtitle: '개발중입니다.',
-                leading: Icon(Icons.chat_bubble),
+                leading: Icon(Icons.connect_without_contact),
                 titleTextStyle: settingTitleStyle,
               ),
               SettingsTile(

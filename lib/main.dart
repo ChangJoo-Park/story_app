@@ -1,13 +1,14 @@
 import 'dart:async';
 import 'dart:io';
+
 import 'package:animations/animations.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:intl/date_symbol_data_local.dart';
 import 'package:intl/intl.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:story_app/controllers/home_controller.dart';
 import 'package:story_app/pages/compose.dart';
-import 'package:intl/date_symbol_data_local.dart';
 import 'package:story_app/pages/setting.dart';
 
 void main() async {
@@ -49,7 +50,7 @@ class StroyApp extends StatelessWidget {
             title: Text("이야기"),
             actions: [
               IconButton(
-                icon: Icon(Icons.fireplace),
+                icon: Icon(Icons.settings),
                 onPressed: () {
                   Get.to(SettingPage());
                 },
@@ -70,9 +71,9 @@ class StroyApp extends StatelessWidget {
           body: Obx(
             () => ListView.builder(
               itemBuilder: (BuildContext context, int index) {
-                DateTime datetime = DateTime.parse(
-                        controller.files[index]['doc'].data['datetime'])
-                    .toLocal();
+                Map<String, dynamic> item = controller.files[index];
+                DateTime datetime =
+                    DateTime.parse(item['doc'].data['datetime']).toLocal();
                 String month = DateFormat.MMM('ko').format(datetime);
 
                 return Padding(
@@ -131,9 +132,9 @@ class StroyApp extends StatelessWidget {
                                 ),
                                 const SizedBox(height: 16.0),
                                 Text(
-                                  controller
-                                          .files[index]['doc'].data['title'] ??
-                                      '제목없음',
+                                  item['doc'].data['title'] as String == ''
+                                      ? '제목없음'
+                                      : item['doc'].data['title'],
                                   style: TextStyle(
                                     color: Colors.grey.shade700,
                                     fontWeight: FontWeight.w600,
@@ -142,8 +143,7 @@ class StroyApp extends StatelessWidget {
                                 ),
                                 SizedBox(height: 4),
                                 Text(
-                                  controller
-                                      .files[index]['doc'].data['excerpt'],
+                                  item['doc'].data['excerpt'],
                                   maxLines: 3,
                                   overflow: TextOverflow.fade,
                                   softWrap: true,
@@ -169,7 +169,10 @@ class StroyApp extends StatelessWidget {
                               onSelected: (selected) {
                                 switch (selected) {
                                   case 1:
-                                    // Get.to(ComposePage());
+                                    Get.to(ComposePage(item: item))
+                                        .then((result) {
+                                      Get.back();
+                                    });
                                     break;
                                   case 2:
                                     Get.defaultDialog(
@@ -183,6 +186,7 @@ class StroyApp extends StatelessWidget {
                                       confirmTextColor: Colors.red,
                                       buttonColor: Colors.white,
                                       onConfirm: () {
+                                        File(item['path']).deleteSync();
                                         Get.back();
                                         Get.back();
                                       },
@@ -224,7 +228,7 @@ class StroyApp extends StatelessWidget {
                                 ),
                                 // Title
                                 Text(
-                                  controller.files[index]['doc'].data['title'],
+                                  item['doc'].data['title'],
                                   style: Theme.of(context)
                                       .textTheme
                                       .headline5
@@ -236,7 +240,7 @@ class StroyApp extends StatelessWidget {
                                 // Content
                                 SizedBox(height: 16),
                                 Text(
-                                  controller.files[index]['doc'].content,
+                                  item['doc'].content,
                                   style: Theme.of(context).textTheme.bodyText1,
                                 ),
                               ],

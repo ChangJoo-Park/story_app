@@ -5,6 +5,10 @@ import 'package:get/get.dart';
 import 'package:path_provider/path_provider.dart';
 
 class ComposePage extends StatefulWidget {
+  final Map<String, dynamic> item;
+
+  ComposePage({this.item});
+
   @override
   _ComposePageState createState() => _ComposePageState();
 }
@@ -13,11 +17,20 @@ class _ComposePageState extends State<ComposePage> {
   final _formKey = GlobalKey<FormState>();
   String title = '';
   String description = '';
+  DateTime datetime;
   DateTime date;
   TimeOfDay timeOfDay;
-
+  bool isEdit = false;
   @override
   void initState() {
+    setState(() => isEdit = widget.item != null);
+    if (isEdit) {
+      setState(() {
+        title = widget.item['doc'].data['title'];
+        description = widget.item['doc'].content;
+        datetime = DateTime.parse(widget.item['doc'].data['datetime']);
+      });
+    }
     super.initState();
   }
 
@@ -63,22 +76,29 @@ class _ComposePageState extends State<ComposePage> {
                 _formKey.currentState.save();
                 final directory = await getApplicationDocumentsDirectory();
                 final filename = DateTime.now().toUtc();
-                final path = '${directory.path}/notes/$filename.txt';
-                File(path).createSync();
-                File(path).writeAsStringSync('''---
+                final path = isEdit
+                    ? widget.item['path']
+                    : '${directory.path}/notes/$filename.txt';
+                final String content = '''---
 title: "$title"
 excerpt: "$excerpt"
 datetime: "${DateTime.now().toUtc()}"
 images: ""
 ---
-$description''');
-                Get.back();
+$description''';
+                if (isEdit) {
+                  File(path).writeAsStringSync(content);
+                } else {
+                  File(path).createSync();
+                  File(path).writeAsStringSync(content);
+                }
+                Get.back(result: content);
               },
             ),
           ],
           elevation: 0,
           title: Text(
-            '새 글쓰기',
+            isEdit ? '글 수정하기' : '새 글쓰기',
             style: TextStyle(color: Colors.grey.shade800),
           ),
         ),
@@ -95,7 +115,7 @@ $description''');
                     initialValue: title,
                     cursorColor: Colors.black,
                     textInputAction: TextInputAction.next,
-                    autofocus: true,
+                    autofocus: !isEdit,
                     decoration: InputDecoration(
                       focusColor: Colors.grey,
                       enabledBorder: InputBorder.none,
@@ -109,6 +129,7 @@ $description''');
                 Expanded(
                   flex: 1,
                   child: TextFormField(
+                    initialValue: description,
                     cursorColor: Colors.black,
                     decoration: InputDecoration(
                       hintText: "무슨 이야기를 적어볼까요?",
