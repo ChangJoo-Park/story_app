@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:in_app_review/in_app_review.dart';
 import 'package:settings_ui/settings_ui.dart';
+import 'package:share/share.dart';
 
 class SettingPage extends StatelessWidget {
   final TextStyle settingTitleStyle = TextStyle(color: Colors.grey.shade800);
@@ -50,6 +52,16 @@ class SettingPage extends StatelessWidget {
                 subtitle: '칭찬과 격려를 남겨주세요.',
                 leading: Icon(Icons.star_rate),
                 titleTextStyle: settingTitleStyle,
+                onTap: () async {
+                  try {
+                    final InAppReview inAppReview = InAppReview.instance;
+                    if (await inAppReview.isAvailable()) {
+                      inAppReview.requestReview();
+                    }
+                  } catch (e) {
+                    print('에러');
+                  }
+                },
               ),
               SettingsTile(
                 title: '이야기 후원하기',
@@ -66,6 +78,9 @@ class SettingPage extends StatelessWidget {
                 title: '이야기 앱 공유하기',
                 leading: Icon(Icons.share),
                 titleTextStyle: settingTitleStyle,
+                onTap: () {
+                  Share.share('이야기앱을 공유합니다', subject: 'SHARE_APP');
+                },
               ),
             ],
           ),
