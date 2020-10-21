@@ -74,7 +74,9 @@ class SettingPage extends StatelessWidget {
                 leading: Icon(Icons.share),
                 titleTextStyle: settingTitleStyle,
                 onTap: () {
-                  Share.share('이야기앱을 공유합니다', subject: 'SHARE_APP');
+                  Share.share(
+                      '이야기앱을 공유합니다. 오늘부터 조금씩 적어보는건 어떨까요?\nbit.ly/3m7WMc7',
+                      subject: 'SHARE_APP');
                 },
               ),
             ],
