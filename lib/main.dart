@@ -9,6 +9,7 @@ import 'package:intl/date_symbol_data_local.dart';
 import 'package:intl/intl.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:story_app/controllers/home_controller.dart';
+import 'package:story_app/models/post.dart';
 import 'package:story_app/pages/compose.dart';
 import 'package:story_app/pages/setting.dart';
 
@@ -72,9 +73,9 @@ class StroyApp extends StatelessWidget {
           body: Obx(
             () => ListView.builder(
               itemBuilder: (BuildContext context, int index) {
-                Map<String, dynamic> item = controller.files[index];
+                Post item = controller.files[index];
                 DateTime datetime =
-                    DateTime.parse(item['doc'].data['datetime']).toLocal();
+                    DateTime.parse(item.doc.data['datetime']).toLocal();
                 String month = DateFormat.MMM('ko').format(datetime);
 
                 return Padding(
@@ -133,9 +134,9 @@ class StroyApp extends StatelessWidget {
                                 ),
                                 const SizedBox(height: 16.0),
                                 Text(
-                                  item['doc'].data['title'] as String == ''
+                                  item.doc.data['title'] as String == ''
                                       ? '제목없음'
-                                      : item['doc'].data['title'],
+                                      : item.doc.data['title'],
                                   style: TextStyle(
                                     color: Colors.grey.shade700,
                                     fontWeight: FontWeight.w600,
@@ -144,7 +145,7 @@ class StroyApp extends StatelessWidget {
                                 ),
                                 SizedBox(height: 4),
                                 Text(
-                                  item['doc'].data['excerpt'],
+                                  item.doc.data['excerpt'],
                                   maxLines: 3,
                                   overflow: TextOverflow.fade,
                                   softWrap: true,
@@ -171,7 +172,7 @@ class StroyApp extends StatelessWidget {
                                 switch (selected) {
                                   case 0:
                                     String content =
-                                        "${item['doc'].data['title']}\n${item['doc'].content}";
+                                        "${item.doc.data['title']}\n${item.doc.content}";
                                     FlutterClipboard.copy(content)
                                         .then((value) {
                                       Get.snackbar('클립보드에 복사',
@@ -197,7 +198,7 @@ class StroyApp extends StatelessWidget {
                                       confirmTextColor: Colors.red,
                                       buttonColor: Colors.white,
                                       onConfirm: () {
-                                        File(item['path']).deleteSync();
+                                        File(item.path).deleteSync();
                                         Get.back();
                                         Get.back();
                                       },
@@ -235,9 +236,9 @@ class StroyApp extends StatelessWidget {
                               children: [
                                 // FrontMatter
                                 // Title
-                                if (item['doc'].data['title'] != '')
+                                if (item.doc.data['title'] != '')
                                   Text(
-                                    item['doc'].data['title'],
+                                    item.doc.data['title'],
                                     style: Theme.of(context)
                                         .textTheme
                                         .headline5
@@ -260,7 +261,7 @@ class StroyApp extends StatelessWidget {
                                 ),
                                 // Content
                                 Text(
-                                  item['doc'].content,
+                                  item.doc.content,
                                   style: Theme.of(context)
                                       .textTheme
                                       .bodyText1
@@ -281,9 +282,5 @@ class StroyApp extends StatelessWidget {
         );
       },
     );
-  }
-
-  Stream<Directory> get documentDirectoryStream {
-    return getApplicationDocumentsDirectory().asStream();
   }
 }

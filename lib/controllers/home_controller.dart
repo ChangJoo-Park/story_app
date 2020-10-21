@@ -3,9 +3,10 @@ import 'dart:io';
 import 'package:get/get.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:front_matter/front_matter.dart' as fm;
+import 'package:story_app/models/post.dart';
 
 class HomeController extends GetxController {
-  final RxList<Map<String, dynamic>> files = <Map<String, dynamic>>[].obs;
+  final RxList<Post> files = <Post>[].obs;
 
   @override
   onInit() {
@@ -23,25 +24,21 @@ class HomeController extends GetxController {
     }).then((List<FileSystemEntity> files) {
       return Future.wait(files.map((file) async {
         fm.FrontMatterDocument doc = await fm.parseFile(file.path);
-        Map<String, dynamic> map = {
-          'path': file.path,
-          'doc': doc,
-        };
-        return map;
+        return Post(path: file.path, doc: doc);
       }).toList());
-    }).then((List<Map<String, dynamic>> list) {
+    }).then((List<Post> list) {
       if (list.isEmpty) {
         return list;
       }
 
-      list.sort((Map<String, dynamic> a, Map<String, dynamic> b) {
-        DateTime dateA = DateTime.parse(a['doc'].data['datetime']);
-        DateTime dateB = DateTime.parse(b['doc'].data['datetime']);
+      list.sort((Post a, Post b) {
+        DateTime dateA = DateTime.parse(a.doc.data['datetime']);
+        DateTime dateB = DateTime.parse(b.doc.data['datetime']);
         return dateB.millisecondsSinceEpoch
             .compareTo(dateA.millisecondsSinceEpoch);
       });
       return list;
-    }).then((List<Map<String, dynamic>> newDocs) {
+    }).then((List<Post> newDocs) {
       files.value = newDocs;
     });
   }

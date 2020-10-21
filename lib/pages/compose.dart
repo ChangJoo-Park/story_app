@@ -3,9 +3,10 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:story_app/models/post.dart';
 
 class ComposePage extends StatefulWidget {
-  final Map<String, dynamic> item;
+  final Post item;
 
   ComposePage({this.item});
 
@@ -26,9 +27,9 @@ class _ComposePageState extends State<ComposePage> {
     setState(() => isEdit = widget.item != null);
     if (isEdit) {
       setState(() {
-        title = widget.item['doc'].data['title'];
-        description = widget.item['doc'].content;
-        datetime = DateTime.parse(widget.item['doc'].data['datetime']);
+        title = widget.item.doc.data['title'];
+        description = widget.item.doc.content;
+        datetime = DateTime.parse(widget.item.doc.data['datetime']);
       });
     }
     super.initState();
@@ -77,7 +78,7 @@ class _ComposePageState extends State<ComposePage> {
                 final directory = await getApplicationDocumentsDirectory();
                 final filename = DateTime.now().toUtc();
                 final path = isEdit
-                    ? widget.item['path']
+                    ? widget.item.path
                     : '${directory.path}/notes/$filename.txt';
                 final String content = '''---
 title: "${title.trim()}"
