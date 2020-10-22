@@ -29,7 +29,7 @@ class _ComposePageState extends State<ComposePage> {
       setState(() {
         title = widget.item.doc.data['title'];
         description = widget.item.doc.content;
-        datetime = DateTime.parse(widget.item.doc.data['datetime']);
+        datetime = DateTime.parse(widget.item.doc.data['created_at']);
       });
     }
     super.initState();
@@ -80,10 +80,16 @@ class _ComposePageState extends State<ComposePage> {
                 final path = isEdit
                     ? widget.item.path
                     : '${directory.path}/notes/$filename.txt';
+                final createdAt = isEdit
+                    ? widget.item.doc.data['created_at']
+                    : DateTime.now().toUtc();
+                final updatedAt = DateTime.now().toUtc();
+
                 final String content = '''---
 title: "${title.trim()}"
 excerpt: "$excerpt"
-datetime: "${DateTime.now().toUtc()}"
+created_at: "$createdAt"
+updated_at: "$updatedAt"
 images: ""
 ---
 $description''';
@@ -99,7 +105,7 @@ $description''';
           ],
           elevation: 0,
           title: Text(
-            isEdit ? '글 수정하기' : '새 글쓰기',
+            isEdit ? '고치기' : '남기기',
             style: TextStyle(color: Colors.grey.shade800),
           ),
         ),

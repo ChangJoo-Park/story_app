@@ -32,8 +32,8 @@ class HomeController extends GetxController {
       }
 
       list.sort((Post a, Post b) {
-        DateTime dateA = DateTime.parse(a.doc.data['datetime']);
-        DateTime dateB = DateTime.parse(b.doc.data['datetime']);
+        DateTime dateA = DateTime.parse(a.doc.data['created_at']);
+        DateTime dateB = DateTime.parse(b.doc.data['created_at']);
         return dateB.millisecondsSinceEpoch
             .compareTo(dateA.millisecondsSinceEpoch);
       });

@@ -14,7 +14,7 @@ class PostListItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    DateTime datetime = DateTime.parse(item.doc.data['datetime']).toLocal();
+    DateTime datetime = DateTime.parse(item.doc.data['created_at']).toLocal();
     String month = DateFormat.MMM('ko').format(datetime);
 
     return Material(

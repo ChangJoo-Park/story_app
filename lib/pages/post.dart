@@ -14,7 +14,7 @@ class PostView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    DateTime datetime = DateTime.parse(item.doc.data['datetime']).toLocal();
+    DateTime datetime = DateTime.parse(item.doc.data['created_at']).toLocal();
     String date = DateFormat.yMMMMEEEEd('ko').format(datetime);
     String time = DateFormat.Hm('ko').format(datetime);
 
