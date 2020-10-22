@@ -19,7 +19,6 @@ class PostView extends StatelessWidget {
     String time = DateFormat.Hm('ko').format(datetime);
 
     return Scaffold(
-      backgroundColor: Colors.grey.shade100,
       appBar: AppBar(
         title: Text('자세히 보기'),
         actions: [

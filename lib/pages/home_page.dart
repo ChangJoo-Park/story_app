@@ -12,7 +12,6 @@ class HomePage extends GetView<HomeController> {
   @override
   Widget build(context) {
     return Scaffold(
-      backgroundColor: Colors.grey.shade100,
       appBar: AppBar(
         title: Text("이야기"),
         actions: [

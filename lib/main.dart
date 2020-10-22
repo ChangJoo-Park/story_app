@@ -11,6 +11,7 @@ void main() async {
   await initializeDateFormatting();
   runApp(
     GetMaterialApp(
+      debugShowCheckedModeBanner: false,
       initialRoute: '/',
       getPages: [
         GetPage(
@@ -25,11 +26,11 @@ void main() async {
         FirebaseAnalyticsObserver(analytics: FirebaseAnalytics()),
       ],
       theme: ThemeData(
-        primaryColor: Colors.grey.shade100,
+        primaryColor: Colors.grey.shade50,
         fontFamily: 'Mapo금빛나루',
-        accentColor: Colors.grey.shade100,
+        accentColor: Colors.grey.shade50,
         appBarTheme: AppBarTheme(
-          color: Colors.grey.shade100,
+          color: Colors.grey.shade50,
           elevation: 0,
           iconTheme: IconThemeData(color: Colors.grey.shade800),
           textTheme: TextTheme(

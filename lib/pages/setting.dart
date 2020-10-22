@@ -11,12 +11,12 @@ class SettingPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.grey.shade100,
+      backgroundColor: Colors.grey.shade50,
       appBar: AppBar(
         title: Text('더보기'),
       ),
       body: SettingsList(
-        backgroundColor: Colors.grey.shade100,
+        backgroundColor: Colors.grey.shade50,
         shrinkWrap: true,
         sections: [
           SettingsSection(

@@ -4,7 +4,6 @@ class CommunityPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.grey.shade100,
       body: CustomScrollView(
         slivers: [
           SliverAppBar(
