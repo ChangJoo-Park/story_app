@@ -34,38 +34,41 @@ class HomePage extends GetView<HomeController> {
         },
       ),
       body: Obx(
-        () => ListView.builder(
-          itemBuilder: (BuildContext context, int index) {
-            Post item = controller.files[index];
+        () => controller.files.length == 0
+            ? Center(child: Text('오늘 어떤 일이 있었나요?'))
+            : ListView.builder(
+                itemBuilder: (BuildContext context, int index) {
+                  Post item = controller.files[index];
 
-            return Padding(
-              padding: const EdgeInsets.symmetric(vertical: 4),
-              child: OpenContainer(
-                key: UniqueKey(),
-                onClosed: (value) {
-                  controller.initialize();
+                  return Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 4),
+                    child: OpenContainer(
+                      key: UniqueKey(),
+                      onClosed: (value) {
+                        controller.initialize();
+                      },
+                      transitionType: ContainerTransitionType.fade,
+                      transitionDuration: 350.milliseconds,
+                      openColor: Colors.grey.shade100,
+                      openElevation: 0,
+                      tappable: true,
+                      closedElevation: 0,
+                      closedColor: Colors.white70,
+                      closedShape: const RoundedRectangleBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(0)),
+                      ),
+                      closedBuilder:
+                          (BuildContext context, void Function() action) {
+                        return PostListItem(item: item, action: action);
+                      },
+                      openBuilder: (BuildContext context,
+                              void Function({Object returnValue}) action) =>
+                          PostView(item: item),
+                    ),
+                  );
                 },
-                transitionType: ContainerTransitionType.fade,
-                transitionDuration: 350.milliseconds,
-                openColor: Colors.grey.shade100,
-                openElevation: 0,
-                tappable: true,
-                closedElevation: 0,
-                closedColor: Colors.white70,
-                closedShape: const RoundedRectangleBorder(
-                  borderRadius: BorderRadius.all(Radius.circular(0)),
-                ),
-                closedBuilder: (BuildContext context, void Function() action) {
-                  return PostListItem(item: item, action: action);
-                },
-                openBuilder: (BuildContext context,
-                        void Function({Object returnValue}) action) =>
-                    PostView(item: item),
+                itemCount: controller.files.length,
               ),
-            );
-          },
-          itemCount: controller.files.length,
-        ),
       ),
     );
   }
