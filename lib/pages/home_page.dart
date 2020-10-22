@@ -37,38 +37,52 @@ class HomePage extends GetView<HomeController> {
         () => controller.files.length == 0
             ? Center(child: Text('오늘 어떤 일이 있었나요?'))
             : ListView.builder(
-                itemBuilder: (BuildContext context, int index) {
-                  Post item = controller.files[index];
-
-                  return Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 4),
-                    child: OpenContainer(
-                      key: UniqueKey(),
-                      onClosed: (value) {
-                        controller.initialize();
-                      },
-                      transitionType: ContainerTransitionType.fade,
-                      transitionDuration: 350.milliseconds,
-                      openColor: Colors.grey.shade100,
-                      openElevation: 0,
-                      tappable: true,
-                      closedElevation: 0,
-                      closedColor: Colors.white70,
-                      closedShape: const RoundedRectangleBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(0)),
-                      ),
-                      closedBuilder:
-                          (BuildContext context, void Function() action) {
-                        return PostListItem(item: item, action: action);
-                      },
-                      openBuilder: (BuildContext context,
-                              void Function({Object returnValue}) action) =>
-                          PostView(item: item),
-                    ),
-                  );
-                },
+                itemBuilder: (BuildContext context, int index) => StoryItem(
+                  initialize: controller.initialize,
+                  item: controller.files[index],
+                ),
                 itemCount: controller.files.length,
               ),
+      ),
+    );
+  }
+}
+
+class StoryItem extends StatelessWidget {
+  const StoryItem({
+    Key key,
+    @required this.initialize,
+    @required this.item,
+  }) : super(key: key);
+
+  final Function initialize;
+  final Post item;
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 4),
+      child: OpenContainer(
+        key: UniqueKey(),
+        onClosed: (value) {
+          initialize();
+        },
+        transitionType: ContainerTransitionType.fade,
+        transitionDuration: 350.milliseconds,
+        openColor: Colors.grey.shade100,
+        openElevation: 0,
+        tappable: true,
+        closedElevation: 0,
+        closedColor: Colors.white70,
+        closedShape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.all(Radius.circular(0)),
+        ),
+        closedBuilder: (BuildContext context, void Function() action) {
+          return PostListItem(item: item, action: action);
+        },
+        openBuilder: (BuildContext context,
+                void Function({Object returnValue}) action) =>
+            PostView(item: item),
       ),
     );
   }
