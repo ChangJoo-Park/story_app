@@ -7,7 +7,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 Map<String, String> locale = {
   'ko': '한국어',
-  'en': 'English',
+  // 'en': 'English',
 };
 
 Map<String, String> font = {
