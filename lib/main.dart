@@ -39,7 +39,7 @@ void main() async {
       navigatorObservers: [
         FirebaseAnalyticsObserver(analytics: FirebaseAnalytics()),
       ],
-      theme: getTheme(''),
+      theme: getTheme(),
     ),
   );
 }
