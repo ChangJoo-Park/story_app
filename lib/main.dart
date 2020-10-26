@@ -6,6 +6,7 @@ import 'package:intl/date_symbol_data_local.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:story_app/controllers/home_controller.dart';
 import 'package:story_app/pages/home_page.dart';
+import 'package:story_app/theme.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -36,25 +37,7 @@ void main() async {
       navigatorObservers: [
         FirebaseAnalyticsObserver(analytics: FirebaseAnalytics()),
       ],
-      theme: ThemeData(
-        primaryColor: Colors.grey.shade50,
-        fontFamily: _prefs.getString('font'),
-        accentColor: Colors.grey.shade50,
-        appBarTheme: AppBarTheme(
-          color: Colors.grey.shade50,
-          elevation: 0,
-          iconTheme: IconThemeData(color: Colors.grey.shade800),
-          textTheme: TextTheme(
-            headline6: TextStyle(
-              color: Colors.grey.shade600,
-              fontFamily: _prefs.getString('font'),
-            ),
-          ),
-        ),
-        floatingActionButtonTheme: FloatingActionButtonThemeData(
-          backgroundColor: Colors.grey.shade800,
-        ),
-      ),
+      theme: getTheme(''),
     ),
   );
 }
