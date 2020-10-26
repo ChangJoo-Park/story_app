@@ -1,9 +1,12 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:in_app_review/in_app_review.dart';
 import 'package:settings_ui/settings_ui.dart';
 import 'package:share/share.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:store_launcher/store_launcher.dart';
 
 Map<String, String> locale = {
   'ko': '한국어',
@@ -127,6 +130,22 @@ class SettingPage extends StatelessWidget {
                 title: '기타',
                 titleTextStyle: settingSectionTitleStyle,
                 tiles: [
+                  SettingsTile(
+                    title: Platform.isAndroid ? '플레이스토어에서 보기' : '앱스토어에서 보기',
+                    leading: Icon(Icons.store),
+                    titleTextStyle: settingTitleStyle,
+                    onTap: () {
+                      try {
+                        StoreLauncher.openWithStore(
+                                'com.changjoopark.story_app')
+                            .catchError((e) {
+                          print('ERROR> $e');
+                        });
+                      } on Exception catch (e) {
+                        print('$e');
+                      }
+                    },
+                  ),
                   SettingsTile(
                     title: '오픈소스 라이선스',
                     leading: Icon(Icons.collections_bookmark),
