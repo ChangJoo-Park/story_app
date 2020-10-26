@@ -24,6 +24,8 @@ void main() async {
   runApp(
     GetMaterialApp(
       debugShowCheckedModeBanner: false,
+      locale: Locale('ko', 'KR'),
+      fallbackLocale: Locale('ko', 'KR'),
       initialRoute: '/',
       getPages: [
         GetPage(
