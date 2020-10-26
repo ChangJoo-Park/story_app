@@ -3,23 +3,17 @@ import 'package:firebase_analytics/observer.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/date_symbol_data_local.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:story_app/controllers/home_controller.dart';
 import 'package:story_app/pages/home_page.dart';
+import 'package:story_app/services/setting_service.dart';
 import 'package:story_app/theme.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await initializeDateFormatting();
-  SharedPreferences _prefs = await SharedPreferences.getInstance();
+  await initServices();
 
-  if (!_prefs.containsKey('initialized') || !_prefs.getBool('initialized')) {
-    await Future.wait([
-      _prefs.setBool('initialized', true),
-      _prefs.setString('font', 'Mapo금빛나루'),
-      _prefs.setString('locale', 'ko'),
-    ]);
-  }
+  /// AWAIT SERVICES INITIALIZATION.
 
   runApp(
     GetMaterialApp(
@@ -42,4 +36,10 @@ void main() async {
       theme: getTheme(),
     ),
   );
+}
+
+initServices() async {
+  print('starting services ...');
+  await Get.putAsync(() => SettingService().init());
+  print('All services started...');
 }
