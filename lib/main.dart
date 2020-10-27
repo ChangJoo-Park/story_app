@@ -33,7 +33,11 @@ void main() async {
       navigatorObservers: [
         FirebaseAnalyticsObserver(analytics: FirebaseAnalytics()),
       ],
-      theme: getTheme(),
+      theme: getTheme().copyWith(
+        pageTransitionsTheme: const PageTransitionsTheme(
+          builders: <TargetPlatform, PageTransitionsBuilder>{},
+        ),
+      ),
     ),
   );
 }

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-getTheme({String themeName = 'default'}) {
+ThemeData getTheme({String themeName = 'default'}) {
   ThemeData themeData;
   switch (themeName) {
     case 'dark':
